@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/825a35d965.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      :root {
+        --background-color: rgb(51 65 85);
+        --text-color: #ffffff;
+        --accent-color: #ef3124;
+        --button-color: #343c76;
+        --button-hover-color: #2a305e;
+      }
+
+      body {
+        background: var(--background-color);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        color: var(--text-color);
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      .height {
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      i {
+        line-height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 items-stretch"
+    >
+      <div class="flex justify-between items-center text-lg">
+        <h5 class="font-bold">Phone</h5>
+        <div class="flex gap-5 items-center">
+          <i class="bi bi-search"></i>
+          <i class="bi bi-three-dots-vertical"></i>
+        </div>
+      </div>
+      <div class="grow flex flex-col justify-end">
+        <input
+          type="text"
+          class="bg-transparent outline-none border-0 text-center text-4xl md:text-5xl lg:text-5xl py-5 font-bold tracking-widest"
+          id="phoneNum"
+          pattern="[0-9]+"
+          autofocus
+        />
+        <div
+          class="grid grid-cols-3 grid-rows-5 text-2xl py-3 px-2 justify-items-center gap-2 items-center"
+          id="callGrid"
+        >
+          <button
+            data-value="1"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">1</p>
+            <i class="bi bi-voicemail absolute text-xs bottom-3"></i>
+          </button>
+          <button
+            data-value="2"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">2</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">ABC</p>
+          </button>
+          <button
+            data-value="3"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">3</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">DEF</p>
+          </button>
+          <button
+            data-value="4"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">4</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">GHI</p>
+          </button>
+          <button
+            data-value="5"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">5</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">JKL</p>
+          </button>
+          <button
+            data-value="6"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">6</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">MNO</p>
+          </button>
+          <button
+            data-value="7"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">7</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">PQRS</p>
+          </button>
+          <button
+            data-value="8"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">8</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">TUV</p>
+          </button>
+          <button
+            data-value="9"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">9</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">WXYZ</p>
+          </button>
+          <button
+            data-value="*"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center items-center rounded-full relative"
+          >
+            <p class="font-bold">*</p>
+          </button>
+          <button
+            data-value="0"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center rounded-full relative"
+          >
+            <p class="font-bold">0</p>
+            <p class="uppercase text-center absolute text-xs bottom-3">+</p>
+          </button>
+          <button
+            data-value="#"
+            class="w-16 h-16 p-2 bg-slate-500/50 hover:bg-slate-500 flex justify-center items-center rounded-full relative"
+          >
+            <p class="font-bold">#</p>
+          </button>
+          <i class="fa-solid fa-delete-left opacity-0"></i>
+          <button
+            id="call"
+            class="bg-green-500/90 hover:bg-green-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
+          >
+            <i class="bi bi-telephone-fill"></i>
+          </button>
+          <button id="backspace">
+            <i class="fa-solid fa-delete-left"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      let vh = 0.01 * window.innerHeight;
+      document.documentElement.style.setProperty("--vh", vh + "px");
+    </script>
+    <script>
+      var callGridArr = document
+        .getElementById("callGrid")
+        .querySelectorAll("button");
+      for (var button of callGridArr) {
+        button.addEventListener("click", (e) => {
+          var buttonHTML = e.target;
+          if (e.target.tagName == "P") {
+            buttonHTML = e.target.parentElement;
+          } else if (e.target.tagName == "I") {
+            return;
+          }
+          if (buttonHTML.id) {
+            return;
+          }
+          document.getElementById("phoneNum").focus();
+          document.getElementById("phoneNum").value += buttonHTML.dataset.value;
+        });
+      }
+
+      document.getElementById("backspace").addEventListener("click", () => {
+        document.getElementById("phoneNum").focus();
+        document.getElementById("phoneNum").value = document
+          .getElementById("phoneNum")
+          .value.slice(0, -1);
+      });
+      document.getElementById("call").addEventListener("click", () => {
+        document.getElementById("phoneNum").focus();
+        if (document.getElementById("phoneNum").value) {
+          window.location.href =
+            window.location.href + document.getElementById("phoneNum").value;
+        }
+      });
+      document.getElementById("phoneNum").addEventListener("input", () => {
+        document.getElementById("phoneNum").value = document
+          .getElementById("phoneNum")
+          .value.replace(/[^\d]/g, "");
+      });
+    </script>
+  </body>
+</html>
