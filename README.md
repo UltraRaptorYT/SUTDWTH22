@@ -5,13 +5,13 @@
 1. In your CLI, git clone the repository
 
    ```
-   git clone https://github.com/Elliott-Chong/tech4good.git
+   git clone https://github.com/UltraRaptorYT/SUTDWTH22
    ```
 
 2. Next, cd into the directory
 
    ```
-   cd tech4good
+   cd SUTDWTH22
    ```
 
 3. Afterwards, install the node packages needed
