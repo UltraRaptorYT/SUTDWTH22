@@ -7,8 +7,6 @@ let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 let continuous = true;
 let interim = false;
 
-speechRec.start(continuous, interim);
-
 function gotSpeech() {
   if (speechRec.resultValue) {
     console.log(speechRec.resultString);
@@ -24,6 +22,7 @@ let transcriptDiv = document.getElementById("transcript");
 
 socket.on("clientid", (id) => {
   socketclientid = id;
+  console.log(socketclientid);
 });
 
 socket.on("message", (payload) => {
@@ -98,6 +97,7 @@ function initCall() {
   calling.innerHTML = `<span id="appendMin">00</span>:<span id="appendSeconds">00</span>`;
   clearInterval(interval);
   interval = setInterval(startTimer, 1000);
+  speechRec.start(continuous, interim);
 }
 
 function startTimer() {
