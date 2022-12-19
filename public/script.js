@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
@@ -108,8 +110,14 @@ function startRecording() {
   mediaRecorder.requestData();
   mediaRecorder.ondataavailable = (ev) => {
     let blob = new Blob([ev.data], { type: "audio/wav" });
-    let videoURL = window.URL.createObjectURL(blob);
-    console.log(videoURL);
+    const formData = new FormData();
+    formData.append("audioBlob", blob, "temp.wav");
+    fetch("http://localhost:5000/get-blob-data", {
+      method: "POST",
+      body: formData,
+    }).then((response) => {
+      return response.json();
+    });
   };
 }
 
