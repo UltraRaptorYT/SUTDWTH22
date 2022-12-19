@@ -26,7 +26,6 @@ io.on("connection", (socket) => {
   });
   socket.on("message", (payload) => {
     const { roomId, message } = payload;
-    console.log(message);
     io.to(roomId).emit("message", { user: socket.id, message });
   });
 });

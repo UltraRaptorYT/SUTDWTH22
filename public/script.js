@@ -2,11 +2,25 @@ const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
 
+let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 
+let continuous = true;
+let interim = false;
+
+speechRec.start(continuous, interim);
+
+function gotSpeech() {
+  if (speechRec.resultValue) {
+    console.log(speechRec.resultString);
+    console.log(socketclientid);
+    socket.emit("message", {
+      message: speechRec.resultString,
+      roomId: ROOM_ID,
+    });
+  }
+}
 
 let transcriptDiv = document.getElementById("transcript");
-
-
 
 socket.on("clientid", (id) => {
   socketclientid = id;
@@ -63,7 +77,6 @@ socket.on("user-disconnected", (userId) => {
 });
 
 myPeer.on("open", (id) => {
-  // console.log(id);
   socket.emit("join-room", ROOM_ID, id);
 });
 

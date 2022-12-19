@@ -202,22 +202,6 @@
         // });
       });
 
-      let speechRec = new p5.SpeechRec("en-US", gotSpeech);
-
-      let continuous = true;
-      let interim = false;
-
-      speechRec.start(continuous, interim);
-
-      function gotSpeech() {
-        if (speechRec.resultValue) {
-          console.log(speechRec.resultString);
-          socket.emit("message", {
-            message: speechRec.resultString,
-            roomId: ROOM_ID,
-          });
-        }
-      }
     </script>
   </body>
 </html>
