@@ -10,13 +10,7 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.render("index");
-  // res.redirect(`/${uuidV4()}`);
-  // res.redirect("/call/");
 });
-
-// app.get("/call/", (req, res) => {
-//   res.render("call");
-// });
 
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
@@ -31,9 +25,9 @@ io.on("connection", (socket) => {
       socket.to(roomId).broadcast.emit("user-disconnected", userId);
     });
   });
-
   socket.on("message", (payload) => {
     const { roomId, message } = payload;
+    console.log(message);
     io.to(roomId).emit("message", { user: socket.id, message });
   });
 });

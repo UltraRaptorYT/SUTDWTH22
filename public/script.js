@@ -1,5 +1,4 @@
 const socket = io("/");
-const videoGrid = document.getElementById("video-grid");
 let socketclientid;
 const myPeer = new Peer();
 // const myPeer = new Peer(undefined, {
@@ -15,9 +14,10 @@ let continuous = true;
 let interim = true;
 
 speechRec.start(continuous, interim);
+console.log("start");
 
 function gotSpeech() {
-  console.log(speechRec);
+  // console.log(speechRec);
   if (speechRec.resultValue && speechRec.resultConfidence > 0.7) {
     socket.emit("message", {
       message: speechRec.resultString,
@@ -132,21 +132,26 @@ function addVideoStream(video, stream) {
   video.srcObject = stream;
   video.addEventListener("loadedmetadata", () => {
     video.play();
+    let chunks = [];
+    let mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+    mediaRecorder.pause();
+    console.log(mediaRecorder.state);
+    mediaRecorder.requestData();
+    mediaRecorder.ondataavailable = (ev) => {
+      console.log(ev.data);
+      chunks.push(ev.data);
+      console.log(chunks);
+    };
+    setTimeout(() => {
+      mediaRecorder.stop();
+    }, 1500);
+    mediaRecorder.onstop = (ev) => {
+      let blob = new Blob(chunks, { type: "audio/wav" });
+      console.log(blob);
+      chunks = [];
+      let videoURL = window.URL.createObjectURL(blob);
+      console.log(videoURL);
+    };
   });
-  videoGrid.append(video);
-  let chunks = [];
-  let mediaRecorder = new MediaRecorder(stream);
-  mediaRecorder.start();
-  console.log(mediaRecorder.state);
-  mediaRecorder.ondataavailable = (ev) => {
-    console.log(ev.data);
-    chunks.push(ev.data);
-    console.log(chunks);
-  };
-  mediaRecorder.onstop = (ev) => {
-    let blob = new Blob(chunks, { type: "video/mp4" });
-    chunks = [];
-    let videoURL = window.URL.createObjectURL(blob);
-    console.log(videoURL);
-  };
 }
