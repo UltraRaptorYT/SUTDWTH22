@@ -1,24 +1,12 @@
 const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
-// const myPeer = new Peer(undefined, {
-//   // //   // host: "http://elliottchong.com/", // main pov
-//   // host: "/", // local testing
-//   // port: "3001",
-// });
 
 let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 let transcriptDiv = document.getElementById("transcript");
 
-let continuous = true;
-let interim = true;
-
-speechRec.start(continuous, interim);
-console.log("start");
-
 function gotSpeech() {
-  // console.log(speechRec);
-  if (speechRec.resultValue && speechRec.resultConfidence > 0.7) {
+  if (speechRec.resultValue) {
     socket.emit("message", {
       message: speechRec.resultString,
       roomId: ROOM_ID,
@@ -32,16 +20,16 @@ socket.on("clientid", (id) => {
 
 socket.on("message", (payload) => {
   const { message, user } = payload;
+  console.log(message);
   let d = document.createElement("div");
   d.textContent = message;
   d.classList.add("bubble");
   if (user.toString() == socketclientid.toString()) d.classList.add("me");
   else d.classList.add("other");
   transcriptDiv.appendChild(d);
-  // transcriptDiv.scrollTop = transcriptDiv.scrollHeight;
+  transcriptDiv.scrollTop = transcriptDiv.scrollHeight;
 });
 
-// const myPeer = new Peer(undefined);
 const myVideo = document.createElement("video");
 const startBtn = document.getElementById("start");
 const stopBtn = document.getElementById("stop");
@@ -56,7 +44,6 @@ myVideo.muted = true;
 const peers = {};
 navigator.mediaDevices
   .getUserMedia({
-    video: true,
     audio: true,
   })
   .then((stream) => {
@@ -117,7 +104,6 @@ function startTimer() {
     appendSeconds.innerHTML = tens;
   }
   if (tens > 60) {
-    console.log("seconds");
     seconds++;
     appendMin.innerHTML = "0" + seconds;
     tens = 0;
@@ -130,8 +116,13 @@ function startTimer() {
 
 function addVideoStream(video, stream) {
   video.srcObject = stream;
+
   video.addEventListener("loadedmetadata", () => {
     video.play();
+    let continuous = true;
+    let interim = true;
+
+    speechRec.start(continuous, interim);
     let chunks = [];
     let mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.start();
