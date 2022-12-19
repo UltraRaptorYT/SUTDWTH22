@@ -164,7 +164,10 @@
           >
             <i class="bi bi-telephone-fill"></i>
           </button>
-          <button id="backspace">
+          <button
+            id="backspace"
+            class="rounded-full p-3 w-16 h-16 flex justify-center items-center"
+          >
             <i class="fa-solid fa-delete-left"></i>
           </button>
         </div>
@@ -173,7 +176,7 @@
     <script>
       let vh = 0.01 * window.innerHeight;
       document.documentElement.style.setProperty("--vh", vh + "px");
-      if (window.innerWidth < 576) {
+      if (window.innerWidth <= 576) {
         document.getElementById("phoneNum").readOnly = true;
       } else {
         document.getElementById("phoneNum").readOnly = false;
@@ -207,6 +210,7 @@
           .getElementById("phoneNum")
           .value.slice(0, -1);
       });
+
       document.getElementById("call").addEventListener("click", () => {
         document.getElementById("phoneNum").focus();
         if (document.getElementById("phoneNum").value) {
