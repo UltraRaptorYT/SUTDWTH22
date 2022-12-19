@@ -2,18 +2,11 @@ const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
 
-let speechRec = new p5.SpeechRec("en-US", gotSpeech);
+
+
 let transcriptDiv = document.getElementById("transcript");
 
-function gotSpeech() {
-  if (speechRec.resultValue) {
-    console.log(speechRec.resultString);
-    socket.emit("message", {
-      message: speechRec.resultString,
-      roomId: ROOM_ID,
-    });
-  }
-}
+
 
 socket.on("clientid", (id) => {
   socketclientid = id;
@@ -28,7 +21,7 @@ socket.on("message", (payload) => {
   if (user.toString() == socketclientid.toString()) d.classList.add("me");
   else d.classList.add("other");
   transcriptDiv.appendChild(d);
-  transcriptDiv.scrollTop = transcriptDiv.scrollHeight;
+  transcriptDiv.scrollTo(0, transcriptDiv.scrollHeight);
 });
 
 const myVideo = document.createElement("video");
@@ -70,7 +63,7 @@ socket.on("user-disconnected", (userId) => {
 });
 
 myPeer.on("open", (id) => {
-  console.log(id);
+  // console.log(id);
   socket.emit("join-room", ROOM_ID, id);
 });
 
@@ -120,30 +113,27 @@ function addVideoStream(video, stream) {
 
   video.addEventListener("loadedmetadata", () => {
     video.play();
-    let continuous = true;
-    let interim = true;
 
-    speechRec.start(continuous, interim);
     let chunks = [];
     let mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.start();
     mediaRecorder.pause();
-    console.log(mediaRecorder.state);
+    // console.log(mediaRecorder.state);
     mediaRecorder.requestData();
     mediaRecorder.ondataavailable = (ev) => {
-      console.log(ev.data);
-      chunks.push(ev.data);
-      console.log(chunks);
+      // console.log(ev.data);
+      // chunks.push(ev.data);
+      // console.log(chunks);
     };
     setTimeout(() => {
       mediaRecorder.stop();
     }, 1500);
     mediaRecorder.onstop = (ev) => {
       let blob = new Blob(chunks, { type: "audio/wav" });
-      console.log(blob);
+      // console.log(blob);
       chunks = [];
       let videoURL = window.URL.createObjectURL(blob);
-      console.log(videoURL);
+      // console.log(videoURL);
     };
   });
 }

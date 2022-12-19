@@ -188,13 +188,6 @@
       var transcriptContainer = document.getElementById("transcript");
       var transcriptScrollHeight = transcriptContainer.scrollHeight;
       var scrollInterval;
-      window.addEventListener("load", () => {
-        // scrollInterval = self.setInterval(() => {
-        //   if (transcriptContainer.scrollTop !== transcriptScrollHeight) {
-        //     transcriptContainer.scrollTo(0, transcriptScrollHeight);
-        //   }
-        // }, 15);
-      });
 
       var restartTimeout;
       transcriptContainer.addEventListener("scroll", () => {
@@ -208,6 +201,23 @@
         //   }, 500);
         // });
       });
+
+      let speechRec = new p5.SpeechRec("en-US", gotSpeech);
+
+      let continuous = true;
+      let interim = false;
+
+      speechRec.start(continuous, interim);
+
+      function gotSpeech() {
+        if (speechRec.resultValue) {
+          console.log(speechRec.resultString);
+          socket.emit("message", {
+            message: speechRec.resultString,
+            roomId: ROOM_ID,
+          });
+        }
+      }
     </script>
   </body>
 </html>
