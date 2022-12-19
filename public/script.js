@@ -5,7 +5,7 @@ const myPeer = new Peer();
 let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 
 let continuous = true;
-let interim = false;
+let interim = true;
 
 function gotSpeech() {
   if (speechRec.resultValue) {
