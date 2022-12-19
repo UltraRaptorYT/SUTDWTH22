@@ -4,13 +4,12 @@ const myPeer = new Peer();
 
 let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 
+let mediaRecorder;
 let continuous = true;
 let interim = true;
 
 function gotSpeech() {
   if (speechRec.resultValue) {
-    console.log(speechRec.resultString);
-    console.log(socketclientid);
     socket.emit("message", {
       message: speechRec.resultString,
       roomId: ROOM_ID,
@@ -60,12 +59,14 @@ navigator.mediaDevices
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
+        mediaRecorder = new MediaRecorder(stream);
         initCall();
         addVideoStream(video, userVideoStream);
       });
     });
 
     socket.on("user-connected", (userId) => {
+      mediaRecorder = new MediaRecorder(stream);
       initCall();
       connectToNewUser(userId, stream);
     });
@@ -98,6 +99,18 @@ function initCall() {
   clearInterval(interval);
   interval = setInterval(startTimer, 1000);
   speechRec.start(continuous, interim);
+  mediaRecorder.start();
+  console.log(mediaRecorder.state);
+  recording = setInterval(startRecording, 5000);
+}
+
+function startRecording() {
+  mediaRecorder.requestData();
+  mediaRecorder.ondataavailable = (ev) => {
+    let blob = new Blob([ev.data], { type: "audio/wav" });
+    let videoURL = window.URL.createObjectURL(blob);
+    console.log(videoURL);
+  };
 }
 
 function startTimer() {
@@ -123,30 +136,7 @@ function startTimer() {
 
 function addVideoStream(video, stream) {
   video.srcObject = stream;
-
   video.addEventListener("loadedmetadata", () => {
     video.play();
-
-    let chunks = [];
-    let mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-    mediaRecorder.pause();
-    // console.log(mediaRecorder.state);
-    mediaRecorder.requestData();
-    mediaRecorder.ondataavailable = (ev) => {
-      // console.log(ev.data);
-      // chunks.push(ev.data);
-      // console.log(chunks);
-    };
-    setTimeout(() => {
-      mediaRecorder.stop();
-    }, 1500);
-    mediaRecorder.onstop = (ev) => {
-      let blob = new Blob(chunks, { type: "audio/wav" });
-      // console.log(blob);
-      chunks = [];
-      let videoURL = window.URL.createObjectURL(blob);
-      // console.log(videoURL);
-    };
   });
 }
