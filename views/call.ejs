@@ -4,11 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
 
+    <script>
+      const ROOM_ID = "<%= roomId %>";
+    </script>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,7 +36,7 @@
     }
   </style> -->
 
-  <body class="h-screen">
+  <body class="height">
     <!-- create a circular logo -->
     <div
       class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 h-screen items-stretch"
@@ -46,15 +45,30 @@
         <div class="flex justify-center items-center">
           <h1 class="text-2xl font-bold text-stone-100">Hong yu</h1>
         </div>
-        <div class="flex justify-center items-center">
-          <h1 class="text-md text-gray-500">0:01</h1>
+        <div class="flex justify-center items-center flex-col">
+          <h1 class="text-md text-gray-500" id="phoneNum"></h1>
+
+          <p class="text-center text-base" id="calling">
+            calling<span class="dot-flashing">...</span>
+          </p>
         </div>
       </div>
 
       <div
-        class="flex mx-auto justify-center items-center w-96 h-96 rounded-full bg-gray-200"
+        class="flex mx-auto justify-center items-center rounded-full bg-gray-200"
       >
         <i class="fa fa-user-o text-4xl text-gray-600"></i>
+      </div>
+
+      <!-- text transcript -->
+      <div
+        class="flex flex-col justify-center items-center bg-gray-600 rounded-bl-lg rounded-br-lg"
+      >
+        <h1 class="text-md font-bold text-stone-100">Transcript</h1>
+        <div
+          class="py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full h-1/2 whitespace-nowrap px-6 flex flex-col gap-2"
+          id="transcript"
+        ></div>
       </div>
 
       <div
@@ -80,11 +94,105 @@
         </button>
         <!-- Decline button -->
         <button
+          id="decline"
           class="flex justify-center items-center w-16 h-16 rounded-full bg-red-500"
         >
-          <i class="fa fa-phone text-2xl text-stone-100"></i>
+          <i class="fa fa-phone text-2xl text-stone-100 rotate-[135deg]"></i>
         </button>
       </div>
     </div>
+    <script>
+      const decline = document.getElementById("decline");
+      decline.addEventListener("click", () => {
+        window.location.href = "/";
+      });
+
+      let vh = 0.01 * window.innerHeight;
+      document.documentElement.style.setProperty("--vh", vh + "px");
+    </script>
+
+    <script>
+      var urlArr = window.location.href.split("\/");
+      document.getElementById("phoneNum").innerHTML = urlArr.pop();
+      var transcriptContainer = document.getElementById("transcript");
+      var transcriptScrollHeight = transcriptContainer.scrollHeight;
+      var scrollInterval;
+
+      var restartTimeout;
+      transcriptContainer.addEventListener("scroll", () => {
+        clearInterval(scrollInterval);
+        clearTimeout(restartTimeout);
+        // restartTimeout = setTimeout(() => {
+        //   scrollInterval = self.setInterval(() => {
+        //     if (transcriptContainer.scrollTop !== transcriptScrollHeight) {
+        //       transcriptContainer.scrollTo(0, transcriptScrollHeight);
+        //     }
+        //   }, 500);
+        // });
+      });
+    </script>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      :root {
+        --background-color: rgb(51 65 85);
+        --text-color: #ffffff;
+        --accent-color: #ef3124;
+        --button-color: #343c76;
+        --button-hover-color: #2a305e;
+      }
+
+      body {
+        background: var(--background-color);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        color: var(--text-color);
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      .height {
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      #video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 300px);
+        grid-auto-rows: 300px;
+      }
+
+      .me {
+        align-self: flex-end;
+        background-color: rgb(14 116 144);
+      }
+      .other {
+        align-self: flex-start;
+        background-color: rgb(55 65 81);
+      }
+
+      .bubble {
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        width: fit-content;
+      }
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      i {
+        line-height: 0;
+      }
+    </style>
   </body>
 </html>

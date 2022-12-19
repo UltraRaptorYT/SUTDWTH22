@@ -19,9 +19,9 @@ app.get("/ws/incoming", (req, res) => {
   res.render("incoming_call");
 });
 
-app.get("/ws/call",(req,res)=>{
-  res.render("call")
-  });
+app.get("/ws/call/:room", (req, res) => {
+  res.render("call", { roomId: req.params.room });
+});
 
 io.on("connection", (socket) => {
   socket.emit("clientid", socket.id);

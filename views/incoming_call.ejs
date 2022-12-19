@@ -25,6 +25,73 @@
       src="https://kit.fontawesome.com/825a35d965.js"
       crossorigin="anonymous"
     ></script>
+
+
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      :root {
+        --background-color: rgb(51 65 85);
+        --text-color: #ffffff;
+        --accent-color: #ef3124;
+        --button-color: #343c76;
+        --button-hover-color: #2a305e;
+      }
+
+      body {
+        background: var(--background-color);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        color: var(--text-color);
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      .height {
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+
+      #video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 300px);
+        grid-auto-rows: 300px;
+      }
+
+      .me {
+        align-self: flex-end;
+        background-color: rgb(14 116 144);
+      }
+      .other {
+        align-self: flex-start;
+        background-color: rgb(55 65 81);
+      }
+
+      .bubble {
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        width: fit-content;
+      }
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      i {
+        line-height: 0;
+      }
+    </style>
+
+
   </head>
   <!-- inline css overflow hidden -->
   <style>
@@ -55,14 +122,29 @@
 
         <div class="flex justify-around items-center py-96">
             <!-- decline button -->
-            <button class="bg-red-500 text-white px-4 py-2 rounded-full">
+            <button class="bg-red-500 text-white px-4 py-2 rounded-full" id="Decline">
                 Decline
             </button>
-          <button class="bg-green-600 text-white px-4 py-2 rounded-full">
+          <button class="bg-green-600 text-white px-4 py-2 rounded-full" id="Accept">
+
+            <!-- <a href="http://localhost:8081/WS/call">Accept</a> -->
             Accept
+
           </button>
         </div>
       </div>
     </div>
+    <script>
+      const accept = document.getElementById("Accept");
+      accept.addEventListener("click", () => {
+        window.location.href = "http://localhost:8081/WS/call/83442098";
+      });
+
+      const decline = document.getElementById("Decline");
+      decline.addEventListener("click", () => {
+        window.location.href = "http://localhost:8081/";
+      });
+    </script>
   </body>
+
 </html>
