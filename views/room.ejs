@@ -188,13 +188,6 @@
       var transcriptContainer = document.getElementById("transcript");
       var transcriptScrollHeight = transcriptContainer.scrollHeight;
       var scrollInterval;
-      window.addEventListener("load", () => {
-        // scrollInterval = self.setInterval(() => {
-        //   if (transcriptContainer.scrollTop !== transcriptScrollHeight) {
-        //     transcriptContainer.scrollTo(0, transcriptScrollHeight);
-        //   }
-        // }, 15);
-      });
 
       var restartTimeout;
       transcriptContainer.addEventListener("scroll", () => {
@@ -208,6 +201,7 @@
         //   }, 500);
         // });
       });
+
     </script>
   </body>
 </html>
