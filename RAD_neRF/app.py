@@ -63,7 +63,10 @@ def get_blob_data():
     Video_aud = Video.replace('.mp4', '_aud.mp4')
 
     # Concat audio with video
-    """Returns"""
+    """
+    Takes in .mp4 file of face video (without audio) and .wav file of audio and
+    Returns the video with audio concatenated denoted by '_aud' suffix
+    """
     try:
         concat_audio_command = subprocess.run(['ffmpeg', '-y', '-i', Video, '-i', 'data/nvp.wav', '-c:v', 'copy', '-c:a', 'aac', Video_aud], check=True, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
@@ -78,6 +81,9 @@ def get_blob_data():
 
 @app.route('/test-return-video-data', methods=['POST'])
 def get_audio_data():
+    """
+    Test .mp4 to base64 conversion and return to frontend
+    """
     print(f"went into get_audio_data")
 
     Video = 'trial/results/ngp_ep0059_aud.mp4' # Hard coded for now
@@ -94,14 +100,6 @@ def get_audio_data():
         print("==>> Video: ", Video)
         print('Video does not exist.')
 
-    # # Concat audio with video
-    # """Returns"""
-    # try:
-    #     concat_audio_command = subprocess.run(['ffmpeg', '-y', '-i', Video, '-i', 'data/nvp.wav', '-c:v', 'copy', '-c:a', 'aac', Video_aud], check=True, stderr=subprocess.PIPE)
-    # except subprocess.CalledProcessError as e:
-    #     print(f'------------------------------------Concat audio failed:-------------------------------------------------')
-    #     print(e.stderr.decode())
-
     # Convert video to base64
     video_file = open(Video, "r+b").read()
     video_url = f"data:video/mp4;base64,{b64encode(video_file).decode()}"
@@ -110,6 +108,37 @@ def get_audio_data():
     with open('TESTvideo_url.txt', 'w') as f:
         f.write(video_url)
     return video_url 
+
+@app.route('/test-concat-audio-video', methods=['POST'])
+def test_concat_audio_video():
+    
+    Video = 'trail/results/test_video_noAudio.mp4' # Hard coded for now
+    Video_aud = Video.replace('.mp4', '_aud.mp4')
+
+    if os.path.exists(Video_aud):
+        print('Video_aud exists.')
+    else:
+        print("==>> Video_aud: ", Video_aud)
+        print('Video_aud does not exist.')
+
+    if os.path.exists(Video):
+        print('Video exists.')
+    else:
+        print("==>> Video: ", Video)
+        print('Video does not exist.')
+
+    # Concat audio with video
+    """
+    Takes in .mp4 file of face video (without audio) and .wav file of audio and
+    Returns the video with audio concatenated denoted by '_aud' suffix
+    """
+    try:
+        concat_audio_command = subprocess.run(['ffmpeg', '-y', '-i', Video, '-i', 'data/nvp.wav', '-c:v', 'copy', '-c:a', 'aac', Video_aud], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f'Concat audio failed:')
+        print(e.stderr.decode())
+    
+    return 'Concat audio success'
 
 
 @app.route('/')
