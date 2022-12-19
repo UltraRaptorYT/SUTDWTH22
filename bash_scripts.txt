@@ -1,6 +1,0 @@
-git clone https://github.com/ashawkey/RAD-NeRF.git
-cd RAD-NeRF
-
-pip install -r requirements.txt
-
-bash scripts/install_ext.sh
