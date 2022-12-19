@@ -28,3 +28,4 @@ lpips
 imageio-ffmpeg
 
 flask
+flask-cors
