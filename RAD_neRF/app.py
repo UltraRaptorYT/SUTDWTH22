@@ -6,8 +6,7 @@ import wave
 import io
 import requests
 app = Flask(__name__)
-CORS(app, origins=['https://express-call.onrender.com/',
-     'http://localhost:8081/'])
+CORS(app)
 # @markdown ####**Settings:**
 Person = 'engm'  # @param ['obama', 'marco', 'engm', 'chris']
 Audio = 'custom'  # @param ['intro', 'nvp', 'custom']
