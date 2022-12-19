@@ -30,6 +30,9 @@ socket.on("message", (payload) => {
   let d = document.createElement("div");
   d.textContent = message;
   d.classList.add("bubble");
+  if (transcriptDiv.children.length < 1) {
+    d.classList.add("mt-auto");
+  }
   if (user.toString() == socketclientid.toString()) d.classList.add("me");
   else d.classList.add("other");
   transcriptDiv.appendChild(d);
@@ -37,9 +40,6 @@ socket.on("message", (payload) => {
 });
 
 const myVideo = document.createElement("video");
-const startBtn = document.getElementById("start");
-const stopBtn = document.getElementById("stop");
-const calling = document.getElementById("calling");
 var transcriptContainer = document.getElementById("transcript");
 
 var seconds = 00;

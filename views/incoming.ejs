@@ -4,8 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script>
+      const ROOM_ID = "<%= roomId %>";
+    </script>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,8 +30,6 @@
       src="https://kit.fontawesome.com/825a35d965.js"
       crossorigin="anonymous"
     ></script>
-
-
 
     <style>
       *,
@@ -89,62 +92,97 @@
       i {
         line-height: 0;
       }
+      #call:before,
+      #call:after {
+        content: "";
+        position: absolute;
+        bottom: 15%;
+        left: 50%;
+        height: 10px;
+        width: 10px;
+        transform: translate(-50%, -100%) rotate(-135deg);
+        transform-origin: 50% 50%;
+        transform-style: flat;
+        border: 2px solid white;
+        border-top: transparent;
+        border-left: transparent;
+        animation: scroll-down 1s ease-in-out infinite;
+      }
+      /* Animation Delay */
+      #call::before {
+        bottom: 14%;
+        animation-delay: 0.3s;
+      }
+
+      /* Animation keyframes */
+      @keyframes scroll-down {
+        0% {
+          opacity: 0;
+        }
+        30% {
+          opacity: 1;
+        }
+        60% {
+          opacity: 1;
+        }
+        100% {
+          bottom: 20%;
+          opacity: 0;
+        }
+      }
     </style>
-
-
   </head>
-  <!-- inline css overflow hidden -->
-  <style>
-    html, body {
-        overflow: hidden;
-    }
-</style>
 
-  <body class="h-screen">
+  <body class="height">
     <!-- create a circular logo -->
-    <div class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 h-screen items-stretch">
-      <div class="justify-center items-center ">
-        <div class="flex flex-col justify-center items-center">
-          <div class="flex justify-center items-center">
-            <div
-              class="flex justify-center items-center w-32 h-32 rounded-full bg-gray-200"
-            >
-              <i class="fa fa-user-o text-4xl text-gray-600"></i>
-            </div>
-          </div>
-          <div class="flex justify-center items-center">
-            <h1 class="text-2xl font-bold text-stone-100">Hong yu</h1>
-          </div>
-          <div class="flex justify-center items-center">
-            <h1 class="text-sm text-gray-100">Whatsapp voice call</h1>
-          </div>
-        </div>
+    <div
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 items-center"
+    >
+      <div
+        class="flex justify-center items-center w-24 h-24 rounded-full bg-gray-200 mt-7 mb-2"
+      >
+        <i class="fa fa-user-o text-3xl text-gray-600"></i>
+      </div>
+      <div class="flex justify-center items-center flex-col gap-2">
+        <h1 class="text-3xl text-stone-100 font-bold" id="phoneNum"></h1>
 
-        <div class="flex justify-around items-center py-96">
-            <!-- decline button -->
-            <button class="bg-red-500 text-white px-4 py-2 rounded-full" id="Decline">
-                Decline
-            </button>
-          <button class="bg-green-600 text-white px-4 py-2 rounded-full" id="Accept">
-
-            <!-- <a href="http://localhost:8081/WS/call">Accept</a> -->
-            Accept
-
-          </button>
-        </div>
+        <p class="text-center text-base" id="calling">Incoming call</p>
+      </div>
+      <div
+        class="flex mt-auto justify-around items-center text-2xl py-7 w-full"
+      >
+        <button
+          id="hang"
+          class="bg-red-500/90 hover:bg-red-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
+        >
+          <i class="bi bi-telephone-fill rotate-[135deg]"></i>
+        </button>
+        <button
+          id="call"
+          class="bg-green-500/90 hover:bg-green-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
+        >
+          <i class="bi bi-telephone-fill"></i>
+        </button>
+        <button
+          id="chat"
+          class="bg-slate-500/50 hover:bg-slate-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
+        >
+          <i class="bi bi-chat-right-text-fill"></i>
+        </button>
       </div>
     </div>
     <script>
-      const accept = document.getElementById("Accept");
+      document.getElementById("phoneNum").innerHTML = ROOM_ID;
+
+      const accept = document.getElementById("call");
       accept.addEventListener("click", () => {
-        window.location.href = "http://localhost:8081/ws/call/83442098";
+        window.location.href = `http://localhost:8081/${ROOM_ID}`;
       });
 
-      const decline = document.getElementById("Decline");
+      const decline = document.getElementById("hang");
       decline.addEventListener("click", () => {
         window.location.href = "http://localhost:8081/";
       });
     </script>
   </body>
-
 </html>

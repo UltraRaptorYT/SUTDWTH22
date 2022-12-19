@@ -91,16 +91,14 @@
     </style>
   </head>
 
-
   <body class="height">
     <!-- create a circular logo -->
     <div
-      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 h-screen items-stretch"
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 h-screen items-stretch"
     >
-      <div class="flex flex-col justify-center items-center">
-
-        <div class="flex justify-center items-center flex-col">
-          <h1 class="text-2xl text-stone-100 font-bold" id="phoneNum"></h1>
+      <div class="flex flex-col justify-center items-center pt-7">
+        <div class="flex justify-center items-center flex-col gap-2">
+          <h1 class="text-3xl text-stone-100 font-bold" id="phoneNum"></h1>
 
           <p class="text-center text-base" id="calling">
             calling<span class="dot-flashing">...</span>
@@ -108,56 +106,59 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="flex mx-auto justify-center items-center rounded-full bg-gray-200"
       >
         <i class="fa fa-user-o text-4xl text-gray-600"></i>
-      </div>
+      </div> -->
 
       <!-- text transcript -->
       <div
-        class="flex flex-col h-64 justify-center items-center bg-gray-600 rounded-bl-lg rounded-br-lg"
+        class="flex flex-col h-56 justify-center items-center rounded-bl-lg rounded-br-lg mt-auto"
       >
-        <h1 class="text-md font-bold text-stone-100">Transcript</h1>
         <div
-          class="h-full py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full h-1/2 whitespace-nowrap px-6 flex flex-col gap-2"
+          class="h-full py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full whitespace-nowrap px-6 flex flex-col gap-2"
           id="transcript"
         ></div>
       </div>
 
       <div
-        class="flex mt-auto justify-around items-center bg-gray-600 py-10 rounded-tl-lg rounded-tr-lg"
+        class="flex justify-around items-center bg-slate-500/50 py-2 rounded-tl-lg rounded-tr-lg text-2xl"
       >
         <!-- speaker button -->
         <button
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-gray-200"
+          id="speaker"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500/50"
         >
-          <i class="fa fa-volume-up text-2xl text-gray-600"></i>
+          <i class="fa-solid fa-volume-high"></i>
         </button>
         <!-- open camera button -->
         <button
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-gray-200"
+          id="camera"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500"
         >
-          <i class="fa fa-video-camera text-2xl text-gray-600"></i>
+          <i class="bi bi-camera-video-fill"></i>
         </button>
         <!-- mute button -->
         <button
-          class="flex justify-around items-center w-16 h-16 rounded-full bg-gray-200"
+          data-mute="false"
+          id="microphone"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500"
         >
-          <i class="fa fa-microphone-slash text-2xl text-gray-600"></i>
+          <i class="bi bi-mic-mute-fill"></i>
         </button>
-        <!-- Decline button -->
+        <!-- Hang button -->
         <button
-          id="decline"
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-red-500"
+          id="hang"
+          class="bg-red-500/90 hover:bg-red-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
         >
-          <i class="fa fa-phone text-2xl text-stone-100 rotate-[135deg]"></i>
+          <i class="bi bi-telephone-fill rotate-[135deg]"></i>
         </button>
       </div>
     </div>
     <script>
-      const decline = document.getElementById("decline");
-      decline.addEventListener("click", () => {
+      const hang = document.getElementById("hang");
+      hang.addEventListener("click", () => {
         window.location.href = "/";
       });
 
@@ -166,6 +167,21 @@
     </script>
 
     <script>
+      const microphone = document.getElementById("microphone");
+      microphone.addEventListener("click", () => {
+        if (microphone.dataset.mute == "false") {
+          microphone.dataset.mute = "true";
+          microphone
+            .querySelector("i")
+            .classList.replace("bi-mic-mute-fill", "bi-mic-fill");
+        } else {
+          microphone.dataset.mute = "false";
+          microphone
+            .querySelector("i")
+            .classList.replace("bi-mic-fill", "bi-mic-mute-fill");
+        }
+      });
+
       var urlArr = window.location.href.split("\/");
       document.getElementById("phoneNum").innerHTML = urlArr.pop();
       var transcriptContainer = document.getElementById("transcript");
@@ -185,6 +201,5 @@
         // });
       });
     </script>
-
   </body>
 </html>
