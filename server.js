@@ -14,6 +14,14 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/class/enter", (req, res) => {
+  res.render("class_enter");
+})
+
+app.get("/class/:room", (req, res) => {
+  res.render("class_call", { roomId: req.params.room });
+});
+
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
@@ -41,12 +49,6 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("message", { user: socket.id, message });
   });
 });
-
-
-
-
-
-
 
 server.listen(process.env.PORT || PORT);
 console.log(
