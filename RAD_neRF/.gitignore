@@ -3,6 +3,7 @@ build/
 *.egg-info/
 *.so
 *.mp4
+*.wav
 
 tmp*
 trial*/

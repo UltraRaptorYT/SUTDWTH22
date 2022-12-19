@@ -1,4 +1,3 @@
-
 const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
@@ -74,7 +73,12 @@ navigator.mediaDevices
   });
 
 socket.on("user-disconnected", (userId) => {
-  if (peers[userId]) peers[userId].close();
+  if (peers[userId]) {
+    peers[userId].close();
+    speechRec.stop();
+    mediaRecorder.stop();
+    window.location.href = "./";
+  }
 });
 
 myPeer.on("open", (id) => {
@@ -109,13 +113,21 @@ function startRecording() {
   mediaRecorder.requestData();
   mediaRecorder.ondataavailable = (ev) => {
     let blob = new Blob([ev.data], { type: "audio/wav" });
-    const formData = new FormData();
-    formData.append("audioBlob", blob, "temp.wav");
-    fetch("http://localhost:5000/get-blob-data", {
-      method: "POST",
-      body: formData,
-    }).then((response) => {
-      return response.json();
+    let formData = new FormData();
+    formData.append("audioBlob", blob);
+    console.log("blob", blob);
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:5000/get-blob-data",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (result) {
+        console.log("success", result);
+      },
+      error: function (result) {
+        console.log("sorry an error occured");
+      },
     });
   };
 }
