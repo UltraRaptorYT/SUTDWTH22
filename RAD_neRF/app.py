@@ -79,37 +79,23 @@ def get_blob_data():
 @app.route('/test-return-video-data', methods=['POST'])
 def get_audio_data():
     print(f"went into get_audio_data")
-
-    Video = 'trial/results/ngp_ep0059_aud.mp4' # Hard coded for now
+    
+    Video = 'trail/results/ngp_ep0059.mp4' # Hard coded for now
     Video_aud = Video.replace('.mp4', '_aud.mp4')
-    if os.path.exists(Video_aud):
-        print('Video_aud exists.')
-    else:
-        print("==>> Video_aud: ", Video_aud)
-        print('Video_aud does not exist.')
 
-    if os.path.exists(Video):
-        print('Video exists.')
-    else:
-        print("==>> Video: ", Video)
-        print('Video does not exist.')
-
-    # # Concat audio with video
-    # """Returns"""
-    # try:
-    #     concat_audio_command = subprocess.run(['ffmpeg', '-y', '-i', Video, '-i', 'data/nvp.wav', '-c:v', 'copy', '-c:a', 'aac', Video_aud], check=True, stderr=subprocess.PIPE)
-    # except subprocess.CalledProcessError as e:
-    #     print(f'------------------------------------Concat audio failed:-------------------------------------------------')
-    #     print(e.stderr.decode())
+    # Concat audio with video
+    """Returns"""
+    try:
+        concat_audio_command = subprocess.run(['ffmpeg', '-y', '-i', Video, '-i', 'data/nvp.wav', '-c:v', 'copy', '-c:a', 'aac', Video_aud], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f'Concat audio failed:')
+        print(e.stderr.decode())
 
     # Convert video to base64
-    video_file = open(Video, "r+b").read()
+    video_file = open(Video_aud, "r+b").read()
     video_url = f"data:video/mp4;base64,{b64encode(video_file).decode()}"
 
-    # Save video url to file
-    with open('TESTvideo_url.txt', 'w') as f:
-        f.write(video_url)
-    return video_url 
+    return video_url
 
 
 @app.route('/')
