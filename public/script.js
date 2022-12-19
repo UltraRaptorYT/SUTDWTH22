@@ -111,12 +111,12 @@ function startRecording() {
     let blob = new Blob([ev.data], { type: "audio/wav" });
     const formData = new FormData();
     formData.append("audioBlob", blob, "temp.wav");
-    // fetch("http://localhost:5000/get-blob-data", {
-    //   method: "POST",
-    //   body: formData,
-    // }).then((response) => {
-    //   return response.json();
-    // });
+    fetch("http://localhost:5000/get-blob-data", {
+      method: "POST",
+      body: formData,
+    }).then((response) => {
+      return response.json();
+    });
   };
 }
 
