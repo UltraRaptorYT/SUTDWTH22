@@ -7,6 +7,7 @@ let transcriptDiv = document.getElementById("transcript");
 
 function gotSpeech() {
   if (speechRec.resultValue) {
+    console.log(speechRec.resultString);
     socket.emit("message", {
       message: speechRec.resultString,
       roomId: ROOM_ID,
