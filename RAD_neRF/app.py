@@ -27,7 +27,6 @@ Pose_end = 100  # @param {type: 'integer'}
 def get_blob_data():
     print(f"went into get-blob-data")
     print(request)
-
     blob_data = request.data
     print(f"blob_data==> {blob_data}")
     # # do something with the blob data here
@@ -36,8 +35,12 @@ def get_blob_data():
     #     with wave.open("recording.wav", "wb") as out:
     #         out.setparams(f.getparams())
     #         out.writeframes(f.readframes(f.getnframes()))
+    try:
+        runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/pose.json', '--data_range', '0', '100', '--ckpt', 'pretrained/model.pth', '--aud', 'data/engm_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(e.stderr.decode())
 
-    # RunInference = subprocess.run(['test.py', '-O', '--torso', '--pose', 'preTrained/marco.json', '--data_range', Pose_start, Pose_end, '--ckpt', 'preTrained/marco_eo.pth', '--aud', 'OI THE AUDIO THINGY FILE.npy', '--bg_img', 'data/bg.jpg', '--workspace', 'trial'])
+    print(f"runInference==> {runInference}")
     return 'Success'
 
 
