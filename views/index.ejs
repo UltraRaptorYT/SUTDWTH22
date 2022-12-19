@@ -173,8 +173,15 @@
     <script>
       let vh = 0.01 * window.innerHeight;
       document.documentElement.style.setProperty("--vh", vh + "px");
+      if (window.innerWidth < 576) {
+        document.getElementById("phoneNum").readOnly = true;
+      } else {
+        document.getElementById("phoneNum").readOnly = false;
+      }
     </script>
     <script>
+      document.getElementById("phoneNum").focus();
+
       var callGridArr = document
         .getElementById("callGrid")
         .querySelectorAll("button");
