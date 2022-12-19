@@ -15,6 +15,14 @@ app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
 
+app.get("/ws/incoming", (req, res) => {
+  res.render("incoming_call");
+});
+
+app.get("/ws/call",(req,res)=>{
+  res.render("call")
+  });
+
 io.on("connection", (socket) => {
   socket.emit("clientid", socket.id);
   socket.on("join-room", (roomId, userId) => {
