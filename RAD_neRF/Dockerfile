@@ -11,7 +11,9 @@ RUN pip install -U pip
 COPY . /app
 WORKDIR app
 
-RUN pip install pyaudio
+RUN conda install -c anaconda pyaudio
+
+RUN pip install PyAudio
 
 COPY requirements.txt app/requirements.txt
 RUN pip install -r app/requirements.txt
