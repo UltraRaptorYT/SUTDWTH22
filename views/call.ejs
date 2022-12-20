@@ -79,23 +79,24 @@
         padding: 0.5rem 1rem;
         border-radius: 9999px;
         width: fit-content;
+        white-space: pre-wrap;
       }
-
+      /* 
       video {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-      }
+      } */
+
       i {
         line-height: 0;
       }
     </style>
   </head>
 
-  <body class="height">
+  <body>
     <!-- create a circular logo -->
     <div
-      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 h-screen items-stretch"
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square flex flex-col gap-3 height items-stretch"
     >
       <div class="flex flex-col justify-center items-center pt-7">
         <div class="flex justify-center items-center flex-col gap-2">
@@ -112,7 +113,13 @@
       >
         <i class="fa fa-user-o text-4xl text-gray-600"></i>
       </div> -->
-
+      <video
+        style="aspect-ratio: 16/9; width: 100%; object-fit: contain"
+        id="video"
+        loop
+        muted
+        autoplay
+      ></video>
       <!-- text transcript -->
       <div
         class="flex flex-col h-56 justify-center items-center rounded-bl-lg rounded-br-lg mt-auto"

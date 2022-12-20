@@ -107,13 +107,14 @@ function connectToNewUser(userId, stream) {
 
 function initCall() {
   transcriptContainer.classList.remove("opacity-0");
+  document.getElementById("video").src = "/video.mp4";
   calling.innerHTML = `<span id="appendMin">00</span>:<span id="appendSeconds">00</span>`;
   clearInterval(interval);
   interval = setInterval(startTimer, 1000);
   speechRec.start(continuous, interim);
   mediaRecorder.record();
   console.log(mediaRecorder.recording);
-  recording = setInterval(startRecording, 5000);
+  recording = setInterval(startRecording, 15000);
 }
 
 function startRecording() {
@@ -141,6 +142,7 @@ function createDownloadLink(blob) {
     processData: false,
     success: function (result) {
       console.log("success", result);
+      document.getElementById("video").src = result;
     },
     error: function (result) {
       console.log("sorry an error occured");

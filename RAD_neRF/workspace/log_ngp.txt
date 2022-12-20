@@ -1,0 +1,259 @@
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-00-57 | cuda | fp16 | workspace
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-01-32 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-02-08 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-02-44 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/model.pth ...
+[INFO] Loading pretrained/model.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-04-48 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-05-03 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-05-03 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-05-19 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-05-19 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-05-35 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-05-35 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-05-51 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-05-51 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-06-05 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-06-05 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-06-20 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-06-20 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-06-35 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-06-35 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-06-50 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-06-50 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-07-06 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-07-06 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-07-21 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-07-21 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-07-34 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-07-34 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] Trainer: ngp | 2022-12-20_15-08-20 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-08-20 | cuda | fp16 | workspace
+[INFO] Trainer: ngp | 2022-12-20_15-08-20 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+==> Start Test, save results to workspace\results
+==> Start Test, save results to workspace\results
+==> Start Test, save results to workspace\results
+[INFO] Trainer: ngp | 2022-12-20_15-08-36 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-08-36 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] Trainer: ngp | 2022-12-20_15-08-53 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+==> Start Test, save results to workspace\results
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+==> Start Test, save results to workspace\results
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+==> Start Test, save results to workspace\results
+[INFO] Trainer: ngp | 2022-12-20_15-10-58 | cuda | fp16 | workspace
+[INFO] #parameters: 4231701
+[INFO] Loading pretrained/marco_eo.pth ...
+[INFO] loaded model.
+[WARN] missing keys: ['density_grid']
+[INFO] load at epoch 29, global step 203000
+==> Start Test, save results to workspace\results

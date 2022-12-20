@@ -714,34 +714,34 @@ def test_inference():
     """
     Test Inference
     """
-    model = NeRFNetwork(opt)
-    print("==>> model: ", model)
-    trainer = Trainer('ngp', opt, model, device='cpu', workspace='workplace', fp16=opt['fp16'], metrics=[], use_checkpoint=opt['ckpt'])
-    test_loader = NeRFDataset_Test(opt, device='cpu').dataloader()
+    # model = NeRFNetwork(opt)
+    # print("==>> model: ", model)
+    # trainer = Trainer('ngp', opt, model, device='cpu', workspace='workplace', fp16=opt['fp16'], metrics=[], use_checkpoint=opt['ckpt'])
+    # test_loader = NeRFDataset_Test(opt, device='cpu').dataloader()
 
-    # temp fix: for update_extra_states
-    model.aud_features = test_loader._data.auds
-    model.eye_areas = test_loader._data.eye_area
+    # # temp fix: for update_extra_states
+    # model.aud_features = test_loader._data.auds
+    # model.eye_areas = test_loader._data.eye_area
 
-    if False:
-        # we still need test_loader to provide audio features for testing.
-        with NeRFGUI(opt, trainer, test_loader) as gui:
-            gui.render()
+    # if False:
+    #     # we still need test_loader to provide audio features for testing.
+    #     with NeRFGUI(opt, trainer, test_loader) as gui:
+    #         gui.render()
 
-    else:
+    # else:
         
-        ### test and save video (fast)  
-        trainer.test(test_loader)
+    #     ### test and save video (fast)  
+    #     trainer.test(test_loader)
 
 # Not hardcoded get-blob-data endpoint
 @app.route("/get-blob-data-not-hardcode", methods=["POST"])
 def get_blob_data_not_hardcode():
-    print(f"went into get-blob-data")
-    try:
-        resetDatafolder()
-        print(f"deleted files in data folder")
-    except:
-        print(f"no files in data folder or error")
+    print(f"went into get-blob-data-nothardcode")
+    # try:
+    #     resetDatafolder()
+    #     print(f"deleted files in data folder")
+    # except:
+    #     print(f"no files in data folder or error")
 
     # get audio blob from frontend uncomment this to get audio blob from frontend
     data = request.files
@@ -757,17 +757,17 @@ def get_blob_data_not_hardcode():
         print(f"Extract audio features failed")
         return "Extract audio features failed"
 
-    # # # Code to run inference CUDA broke this AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    # """
-    # Takes in .npy file of audio features, runs inference and returns .mp4 file of face video (without audio)
-    # """
-    # try:
-    #     runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/marco.json', '--data_range', '0', '100', '--ckpt', 'pretrained/model.pth', '--aud', 'data/nvp_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
-    #     print(f"runInference==> {runInference}")
+    # # Code to run inference CUDA broke this AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    """
+    Takes in .npy file of audio features, runs inference and returns .mp4 file of face video (without audio)
+    """
+    try:
+        runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/marco.json', '--data_range', '0', '100', '--ckpt', 'pretrained/marco_eo.pth', '--aud', 'data/nvp_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
+        print(f"runInference==> {runInference}")
 
-    # except subprocess.CalledProcessError as e:
-    #     print(f'Run inference failed:')
-    #     print(e.stderr.decode())
+    except subprocess.CalledProcessError as e:
+        print(f'Run inference failed:')
+        print(e.stderr.decode())
 
     # get latest .mp4 file from trail/results
     files = os.listdir("trial/results")
