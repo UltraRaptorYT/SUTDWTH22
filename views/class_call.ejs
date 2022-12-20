@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/script.js" defer></script>
+    <!-- <script src="/script.js" defer></script> -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"
       integrity="sha512-rCZdHNB0AePry6kAnKAVFMRfWPmUXSo+/vlGtrOUvhsxD0Punm/xWbEh+8vppPIOzKB9xnk42yCRZ5MD/jvvjQ=="
@@ -91,39 +91,36 @@
       }
     </style>
   </head>
-  <body>
+  <body class="height">
     <!--UI-->
     <!--block out interface to look like its on a mobile device-->
-    <div class="flex justify-center bg-black h-screen">
-      <div class="w-3/12 bg-blue-900 flex flex-col">
-          <!--header-->
-          <div class="mx-auto py-2">LOGO</div>
+    <div
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 items-stretch"
+    >
+      <div class="flex flex-col justify-center items-center h-full">
+        <!--header-->
+        <div class="mx-auto py-2">LOGO</div>
 
-          <!--video box-->
-          <!-- <iframe></iframe> -->
-          <div class="h-80 bg-gray-500">
-            <h1 class="text-md text-gray-500" id="PhoneNum"></h1>
+        <!--video box-->
+        <!-- <iframe></iframe> -->
 
-            <p class="text-center text-base" id="calling">
-              calling<span class="dot-flashing">...</span>
-            </p>
-          </div>
-
-          <!--transcript bubbles-->
-          <div
-          class="py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full h-1/2 whitespace-nowrap px-6 flex flex-col gap-2"
+        <!--transcript bubbles-->
+        <div
+          class="py-3 overflow-x-hidden overflow-y-auto w-full h-1/2 whitespace-nowrap px-6 flex flex-col gap-2"
           id="transcript"
-          ></div>
+        ></div>
 
-          <!--end button-->
-          <footer class="bg-gray-800 mt-auto py-2 flex justify-center">
-              <button class="bg-red-500 hover:bg-red-900 text-white font-bold py-2 px-5 rounded-full"
-              onclick="window.location='/class/enter'">
-                  End
-              </button>
-          </footer>
+        <!--end button-->
+        <footer class="bg-gray-800 mt-auto py-2 flex justify-center">
+          <button
+            class="bg-red-500 hover:bg-red-900 text-white font-bold py-2 px-5 rounded-full"
+            onclick="window.location='/class/enter'"
+          >
+            End
+          </button>
+        </footer>
       </div>
-  </div>
+    </div>
 
     <!-- <button id="start">Start</button>
     <button id="stop">Stop</button> -->
@@ -132,31 +129,24 @@
       document.documentElement.style.setProperty("--vh", vh + "px");
     </script>
     <script>
-      var urlArr = window.location.href.split("\/");
-      document.getElementById("phoneNum").innerHTML = urlArr.pop();
-      document.getElementById("hang").addEventListener("click", () => {
-        window.location.href = "/";
-      });
-      var transcriptContainer = document.getElementById("transcript");
-      var transcriptScrollHeight = transcriptContainer.scrollHeight;
-      var scrollInterval;
+      let speechRec = new p5.SpeechRec("en-US", gotSpeech);
+      var transcriptDiv = document.getElementById("transcript");
 
-      var restartTimeout;
-      transcriptContainer.addEventListener("scroll", () => {
-        clearInterval(scrollInterval);
-        clearTimeout(restartTimeout);
-        // restartTimeout = setTimeout(() => {
-        //   scrollInterval = self.setInterval(() => {
-        //     if (transcriptContainer.scrollTop !== transcriptScrollHeight) {
-        //       transcriptContainer.scrollTo(0, transcriptScrollHeight);
-        //     }
-        //   }, 500);
-        // });
-      });
-    </script>
+      function gotSpeech() {
+        if (speechRec.resultValue) {
+          console.log(speechRec);
+          let d = document.createElement("div");
+          d.textContent = speechRec.resultString;
+          d.classList.add("bubble");
+          d.classList.add("other");
+          transcriptDiv.appendChild(d);
+          transcriptDiv.scrollTo(0, transcriptDiv.scrollHeight);
+        }
+      }
 
-    <script>
-      // if screen size <769 input will be read only
+      let continuous = true;
+      let interim = true;
+      speechRec.start(continuous, interim);
     </script>
   </body>
 </html>

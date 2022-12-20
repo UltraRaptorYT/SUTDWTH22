@@ -18,7 +18,7 @@ app.get("/class/enter", (req, res) => {
   res.render("class_enter");
 })
 
-app.get("/class/:room", (req, res) => {
+app.get("/class", (req, res) => {
   res.render("class_call", { roomId: req.params.room });
 });
 
