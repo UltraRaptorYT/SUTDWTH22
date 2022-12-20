@@ -135,7 +135,7 @@ function createDownloadLink(blob) {
   console.log("audioBlob", blob);
   $.ajax({
     type: "POST",
-    url: "http://localhost:5000/get-blob-data",
+    url: "http://localhost:5000/get-blob-data-not-hardcode",
     data: formData,
     contentType: false,
     processData: false,

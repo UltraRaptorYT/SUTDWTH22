@@ -1,4 +1,5 @@
 import os
+import torch
 from torch.utils.cpp_extension import load
 
 _src_path = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +28,7 @@ elif os.name == "nt":
         if cl_path is None:
             raise RuntimeError("Could not locate a supported Microsoft Visual C++ installation")
         os.environ["PATH"] += ";" + cl_path
-
+print(torch.cuda.current_device())
 _backend = load(name='_raymarching_face',
                 extra_cflags=c_flags,
                 extra_cuda_cflags=nvcc_flags,
