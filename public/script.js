@@ -7,6 +7,9 @@ let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 let mediaRecorder;
 let continuous = true;
 let interim = true;
+// shim for AudioContext when it's not avb.
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext; //audio context to help us record
 
 function gotSpeech() {
   if (speechRec.resultValue) {
@@ -51,22 +54,26 @@ const peers = {};
 navigator.mediaDevices
   .getUserMedia({
     audio: true,
+    video: false,
   })
   .then((stream) => {
     addVideoStream(myVideo, stream);
-
     myPeer.on("call", (call) => {
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
-        mediaRecorder = new MediaRecorder(stream);
+        audioContext = new AudioContext();
+        input = audioContext.createMediaStreamSource(stream);
+        mediaRecorder = new Recorder(input, { numChannels: 1 });
         initCall();
         addVideoStream(video, userVideoStream);
       });
     });
 
     socket.on("user-connected", (userId) => {
-      mediaRecorder = new MediaRecorder(stream);
+      audioContext = new AudioContext();
+      input = audioContext.createMediaStreamSource(stream);
+      mediaRecorder = new Recorder(input, { numChannels: 1 });
       initCall();
       connectToNewUser(userId, stream);
     });
@@ -77,7 +84,7 @@ socket.on("user-disconnected", (userId) => {
     peers[userId].close();
     speechRec.stop();
     mediaRecorder.stop();
-    window.location.href = "./";
+    window.location.reload();
   }
 });
 
@@ -104,32 +111,41 @@ function initCall() {
   clearInterval(interval);
   interval = setInterval(startTimer, 1000);
   speechRec.start(continuous, interim);
-  mediaRecorder.start();
-  console.log(mediaRecorder.state);
+  mediaRecorder.record();
+  console.log(mediaRecorder.recording);
   recording = setInterval(startRecording, 5000);
 }
 
 function startRecording() {
-  mediaRecorder.requestData();
-  mediaRecorder.ondataavailable = (ev) => {
-    let blob = new Blob([ev.data], { type: "audio/wav" });
-    let formData = new FormData();
-    formData.append("audioBlob", blob);
-    console.log("blob", blob);
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:5000/get-blob-data",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (result) {
-        console.log("success", result);
-      },
-      error: function (result) {
-        console.log("sorry an error occured");
-      },
-    });
-  };
+  var tempMediaRecorder = mediaRecorder;
+  mediaRecorder = new Recorder(input, { numChannels: 1 });
+  if (tempMediaRecorder.recording) {
+    tempMediaRecorder.stop();
+    mediaRecorder.record();
+  }
+  tempMediaRecorder.exportWAV(createDownloadLink);
+  var tempMediaRecorder;
+}
+
+function createDownloadLink(blob) {
+  var url = URL.createObjectURL(blob);
+  console.log(url);
+  let formData = new FormData();
+  formData.append("audioBlob", blob);
+  console.log("audioBlob", blob);
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:5000/get-blob-data",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (result) {
+      console.log("success", result);
+    },
+    error: function (result) {
+      console.log("sorry an error occured");
+    },
+  });
 }
 
 function startTimer() {
