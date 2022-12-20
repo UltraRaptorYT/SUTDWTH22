@@ -30,8 +30,3 @@ imageio-ffmpeg
 flask
 flask-cors
 ffmpeg-python
-
-./freqencoder
-./shencoder
-./gridencoder
-./raymarching

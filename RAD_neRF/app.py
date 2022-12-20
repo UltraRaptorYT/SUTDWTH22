@@ -521,64 +521,60 @@ def get_blob_data():
     except:
         print(f"no files in data folder or error")
 
-    # get audio blob from frontend
-    data = request.files
-    print(f"data['audioBlob']==>", data["audioBlob"])
-    data["audioBlob"].save("data/nvp_HY.wav")
+    # # get audio blob from frontend
+    # data = request.files
+    # print(f"data['audioBlob']==>", data["audioBlob"])
+    # data["audioBlob"].save("data/nvp_HY.wav")
 
     """
     Takes in .wav file, performs Audio-spatial Decomposition and returns .npy file of audio features
     """
     try:
-        run_extract = subprocess.run(
-            ["python", "nerf/asr.py", "--wav", "data/nvp.wav", "--save_feats"],
-            check=True,
-            stderr=subprocess.PIPE,
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Extract audio features failed:")
-        print(e.stderr.decode())
+        asr.run("data_test/nvp.wav")
+    except:
+        print(f"Extract audio features failed")
 
-    # # # Code to run inference CUDA broke this AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    # """
-    # Takes in .npy file of audio features, runs inference and returns .mp4 file of face video (without audio)
-    # """
-    # try:
-    #     runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/pose.json', '--data_range', '0', '100', '--ckpt', 'pretrained/model.pth', '--aud', 'data/nvp_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
-    # except subprocess.CalledProcessError as e:
-    #     print(f'Run inference failed:')
-    #     print(e.stderr.decode())
-    # print(f"runInference==> {runInference}")
+
+    # # Code to run inference CUDA broke this AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    """
+    Takes in .npy file of audio features, runs inference and returns .mp4 file of face video (without audio)
+    """
+    try:
+        runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/marco.json', '--data_range', '0', '100', '--ckpt', 'pretrained/model.pth', '--aud', 'data_test/nvp_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f'Run inference failed:')
+        print(e.stderr.decode())
+    print(f"runInference==> {runInference}")
 
     Video = "trail/results/ngp_ep0059.mp4"  # Hard coded for now
     Video_aud = Video.replace(".mp4", "_aud.mp4")
 
-    # Concat audio with video
-    """
-    Takes in .mp4 file of face video (without audio) and .wav file of audio and
-    Returns the video with audio concatenated denoted by '_aud' suffix
-    """
-    try:
-        concat_audio_command = subprocess.run(
-            [
-                "ffmpeg",
-                "-y",
-                "-i",
-                Video,
-                "-i",
-                "data/nvp.wav",
-                "-c:v",
-                "copy",
-                "-c:a",
-                "aac",
-                Video_aud,
-            ],
-            check=True,
-            stderr=subprocess.PIPE,
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Concat audio failed:")
-        print(e.stderr.decode())
+    # # Concat audio with video
+    # """
+    # Takes in .mp4 file of face video (without audio) and .wav file of audio and
+    # Returns the video with audio concatenated denoted by '_aud' suffix
+    # """
+    # try:
+    #     concat_audio_command = subprocess.run(
+    #         [
+    #             "ffmpeg",
+    #             "-y",
+    #             "-i",
+    #             Video,
+    #             "-i",
+    #             "data/nvp.wav",
+    #             "-c:v",
+    #             "copy",
+    #             "-c:a",
+    #             "aac",
+    #             Video_aud,
+    #         ],
+    #         check=True,
+    #         stderr=subprocess.PIPE,
+    #     )
+    # except subprocess.CalledProcessError as e:
+    #     print(f"Concat audio failed:")
+    #     print(e.stderr.decode())
 
     # Convert video to base64
     video_file = open(Video_aud, "r+b").read()
