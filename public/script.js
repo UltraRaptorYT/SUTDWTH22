@@ -1,4 +1,3 @@
-
 const socket = io("/");
 let socketclientid;
 const myPeer = new Peer();
@@ -8,6 +7,9 @@ let speechRec = new p5.SpeechRec("en-US", gotSpeech);
 let mediaRecorder;
 let continuous = true;
 let interim = true;
+// shim for AudioContext when it's not avb.
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext; //audio context to help us record
 
 function gotSpeech() {
   if (speechRec.resultValue) {
@@ -31,6 +33,9 @@ socket.on("message", (payload) => {
   let d = document.createElement("div");
   d.textContent = message;
   d.classList.add("bubble");
+  if (transcriptDiv.children.length < 1) {
+    d.classList.add("mt-auto");
+  }
   if (user.toString() == socketclientid.toString()) d.classList.add("me");
   else d.classList.add("other");
   transcriptDiv.appendChild(d);
@@ -38,9 +43,6 @@ socket.on("message", (payload) => {
 });
 
 const myVideo = document.createElement("video");
-const startBtn = document.getElementById("start");
-const stopBtn = document.getElementById("stop");
-const calling = document.getElementById("calling");
 var transcriptContainer = document.getElementById("transcript");
 
 var seconds = 00;
@@ -52,29 +54,38 @@ const peers = {};
 navigator.mediaDevices
   .getUserMedia({
     audio: true,
+    video: false,
   })
   .then((stream) => {
     addVideoStream(myVideo, stream);
-
     myPeer.on("call", (call) => {
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
-        mediaRecorder = new MediaRecorder(stream);
+        audioContext = new AudioContext();
+        input = audioContext.createMediaStreamSource(stream);
+        mediaRecorder = new Recorder(input, { numChannels: 1 });
         initCall();
         addVideoStream(video, userVideoStream);
       });
     });
 
     socket.on("user-connected", (userId) => {
-      mediaRecorder = new MediaRecorder(stream);
+      audioContext = new AudioContext();
+      input = audioContext.createMediaStreamSource(stream);
+      mediaRecorder = new Recorder(input, { numChannels: 1 });
       initCall();
       connectToNewUser(userId, stream);
     });
   });
 
 socket.on("user-disconnected", (userId) => {
-  if (peers[userId]) peers[userId].close();
+  if (peers[userId]) {
+    peers[userId].close();
+    speechRec.stop();
+    mediaRecorder.stop();
+    window.location.reload();
+  }
 });
 
 myPeer.on("open", (id) => {
@@ -100,24 +111,41 @@ function initCall() {
   clearInterval(interval);
   interval = setInterval(startTimer, 1000);
   speechRec.start(continuous, interim);
-  mediaRecorder.start();
-  console.log(mediaRecorder.state);
+  mediaRecorder.record();
+  console.log(mediaRecorder.recording);
   recording = setInterval(startRecording, 5000);
 }
 
 function startRecording() {
-  mediaRecorder.requestData();
-  mediaRecorder.ondataavailable = (ev) => {
-    let blob = new Blob([ev.data], { type: "audio/wav" });
-    const formData = new FormData();
-    formData.append("audioBlob", blob, "temp.wav");
-    fetch("http://localhost:5000/get-blob-data", {
-      method: "POST",
-      body: formData,
-    }).then((response) => {
-      return response.json();
-    });
-  };
+  var tempMediaRecorder = mediaRecorder;
+  mediaRecorder = new Recorder(input, { numChannels: 1 });
+  if (tempMediaRecorder.recording) {
+    tempMediaRecorder.stop();
+    mediaRecorder.record();
+  }
+  tempMediaRecorder.exportWAV(createDownloadLink);
+  var tempMediaRecorder;
+}
+
+function createDownloadLink(blob) {
+  var url = URL.createObjectURL(blob);
+  console.log(url);
+  let formData = new FormData();
+  formData.append("audioBlob", blob);
+  console.log("audioBlob", blob);
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:5000/get-blob-data",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (result) {
+      console.log("success", result);
+    },
+    error: function (result) {
+      console.log("sorry an error occured");
+    },
+  });
 }
 
 function startTimer() {

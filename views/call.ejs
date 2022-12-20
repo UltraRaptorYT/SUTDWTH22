@@ -11,6 +11,7 @@
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/script.js" defer></script>
+    <script src="/recorder.js" defer></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"
       integrity="sha512-rCZdHNB0AePry6kAnKAVFMRfWPmUXSo+/vlGtrOUvhsxD0Punm/xWbEh+8vppPIOzKB9xnk42yCRZ5MD/jvvjQ=="
@@ -91,18 +92,14 @@
     </style>
   </head>
 
-
   <body class="height">
     <!-- create a circular logo -->
     <div
-      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 px-5 py-7 h-screen items-stretch"
+      class="container max-w-md mx-auto bg-slate-800 w-full aspect-square height flex flex-col gap-3 h-screen items-stretch"
     >
-      <div class="flex flex-col justify-center items-center">
-        <div class="flex justify-center items-center">
-          <h1 class="text-2xl font-bold text-stone-100">Hong yu</h1>
-        </div>
-        <div class="flex justify-center items-center flex-col">
-          <h1 class="text-md text-gray-500" id="phoneNum"></h1>
+      <div class="flex flex-col justify-center items-center pt-7">
+        <div class="flex justify-center items-center flex-col gap-2">
+          <h1 class="text-3xl text-stone-100 font-bold" id="phoneNum"></h1>
 
           <p class="text-center text-base" id="calling">
             calling<span class="dot-flashing">...</span>
@@ -110,56 +107,59 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="flex mx-auto justify-center items-center rounded-full bg-gray-200"
       >
         <i class="fa fa-user-o text-4xl text-gray-600"></i>
-      </div>
+      </div> -->
 
       <!-- text transcript -->
       <div
-        class="flex flex-col justify-center items-center bg-gray-600 rounded-bl-lg rounded-br-lg"
+        class="flex flex-col h-56 justify-center items-center rounded-bl-lg rounded-br-lg mt-auto"
       >
-        <h1 class="text-md font-bold text-stone-100">Transcript</h1>
         <div
-          class="py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full h-1/2 whitespace-nowrap px-6 flex flex-col gap-2"
+          class="h-full py-3 overflow-x-hidden overflow-y-auto opacity-0 w-full whitespace-nowrap px-6 flex flex-col gap-2"
           id="transcript"
         ></div>
       </div>
 
       <div
-        class="flex mt-auto justify-around items-center bg-gray-600 py-10 rounded-tl-lg rounded-tr-lg"
+        class="flex justify-around items-center bg-slate-500/50 py-2 rounded-tl-lg rounded-tr-lg text-2xl"
       >
         <!-- speaker button -->
         <button
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-gray-200"
+          id="speaker"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500/50"
         >
-          <i class="fa fa-volume-up text-2xl text-gray-600"></i>
+          <i class="fa-solid fa-volume-high"></i>
         </button>
         <!-- open camera button -->
         <button
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-gray-200"
+          id="camera"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500"
         >
-          <i class="fa fa-video-camera text-2xl text-gray-600"></i>
+          <i class="bi bi-camera-video-fill"></i>
         </button>
         <!-- mute button -->
         <button
-          class="flex justify-around items-center w-16 h-16 rounded-full bg-gray-200"
+          data-mute="false"
+          id="microphone"
+          class="w-16 h-16 p-2 flex justify-center items-center rounded-full relative hover:bg-slate-500"
         >
-          <i class="fa fa-microphone-slash text-2xl text-gray-600"></i>
+          <i class="bi bi-mic-mute-fill"></i>
         </button>
-        <!-- Decline button -->
+        <!-- Hang button -->
         <button
-          id="decline"
-          class="flex justify-center items-center w-16 h-16 rounded-full bg-red-500"
+          id="hang"
+          class="bg-red-500/90 hover:bg-red-500 rounded-full text-3xl p-3 w-16 h-16 flex justify-center items-center mt-2"
         >
-          <i class="fa fa-phone text-2xl text-stone-100 rotate-[135deg]"></i>
+          <i class="bi bi-telephone-fill rotate-[135deg]"></i>
         </button>
       </div>
     </div>
     <script>
-      const decline = document.getElementById("decline");
-      decline.addEventListener("click", () => {
+      const hang = document.getElementById("hang");
+      hang.addEventListener("click", () => {
         window.location.href = "/";
       });
 
@@ -168,6 +168,21 @@
     </script>
 
     <script>
+      const microphone = document.getElementById("microphone");
+      microphone.addEventListener("click", () => {
+        if (microphone.dataset.mute == "false") {
+          microphone.dataset.mute = "true";
+          microphone
+            .querySelector("i")
+            .classList.replace("bi-mic-mute-fill", "bi-mic-fill");
+        } else {
+          microphone.dataset.mute = "false";
+          microphone
+            .querySelector("i")
+            .classList.replace("bi-mic-fill", "bi-mic-mute-fill");
+        }
+      });
+
       var urlArr = window.location.href.split("\/");
       document.getElementById("phoneNum").innerHTML = urlArr.pop();
       var transcriptContainer = document.getElementById("transcript");
@@ -187,68 +202,12 @@
         // });
       });
     </script>
-
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-      }
-
-      :root {
-        --background-color: rgb(51 65 85);
-        --text-color: #ffffff;
-        --accent-color: #ef3124;
-        --button-color: #343c76;
-        --button-hover-color: #2a305e;
-      }
-
-      body {
-        background: var(--background-color);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
-        color: var(--text-color);
-        height: 100vh;
-        height: calc(var(--vh, 1vh) * 100);
-      }
-
-      .height {
-        height: 100vh;
-        height: calc(var(--vh, 1vh) * 100);
-      }
-
-      #video-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 300px);
-        grid-auto-rows: 300px;
-      }
-
-      .me {
-        align-self: flex-end;
-        background-color: rgb(14 116 144);
-      }
-      .other {
-        align-self: flex-start;
-        background-color: rgb(55 65 81);
-      }
-
-      .bubble {
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        width: fit-content;
-      }
-
-      video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      i {
-        line-height: 0;
-      }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.min.js"
+      integrity="sha512-Dc8aBUPSsnAiEtyqTYZrldxDfs2FnS8cU7BVHIJ1m5atjKrtQCoPRIn3gsVbKm2qY8NwjpTVTnawoC4XBvEZiQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </body>
 </html>

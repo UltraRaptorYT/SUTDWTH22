@@ -9,7 +9,6 @@ const PORT = 8081;
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-
 app.get("/", (req, res) => {
   res.render("index");
 });
@@ -22,17 +21,17 @@ app.get("/class", (req, res) => {
   res.render("class_call", { roomId: req.params.room });
 });
 
-app.get("/:room", (req, res) => {
+app.get("/room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
 
-app.get("/ws/incoming", (req, res) => {
-  res.render("incoming_call");
+app.get("/incoming/:room", (req, res) => {
+  res.render("incoming", { roomId: req.params.room });
 });
 
-app.get("/ws/call/:room",(req,res)=>{
-  res.render("call",{ roomId: req.params.room})
-  });
+app.get("/:room", (req, res) => {
+  res.render("call", { roomId: req.params.room });
+});
 
 io.on("connection", (socket) => {
   console.log("New user connected");

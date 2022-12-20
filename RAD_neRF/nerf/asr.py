@@ -34,8 +34,11 @@ def _play_frame(stream, exit_event, queue, chunk):
 
 class ASR:
     def __init__(self, opt):
+        print("==>> opt: ", opt)
+        print(f"type(opt): {type(opt)}")
 
         self.opt = opt
+        self.opt.asr_wav= None 
 
         self.play = opt.asr_play
 
@@ -248,7 +251,7 @@ class ASR:
                     output_path = self.opt.asr_wav.replace('.wav', '.npy')
                 np.save(output_path, unfold_feats.cpu().numpy())
                 print(f"[INFO] saved logits to {output_path}")
-    
+
     def create_file_stream(self):
     
         stream, sample_rate = sf.read(self.opt.asr_wav) # [T*sample_rate,] float64
@@ -354,6 +357,7 @@ class ASR:
 
 
     def run(self):
+
 
         self.listen()
 
