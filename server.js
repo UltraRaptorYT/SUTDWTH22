@@ -13,6 +13,14 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/class/enter", (req, res) => {
+  res.render("class_enter");
+})
+
+app.get("/class", (req, res) => {
+  res.render("class_call", { roomId: req.params.room });
+});
+
 app.get("/room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
