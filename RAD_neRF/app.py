@@ -25,18 +25,30 @@ Pose_end = 100  # @param {type: 'integer'}
 
 # # print(f'[INFO] use audio file: {Aud}')'
 
+def resetDatafolder():
+    """
+    Function to delete files used in previous post requrest
+    """
+    files = os.listdir('data')
+    for file in files:
+        if file.endswith('.wav') or file.endswith('.npy') or file.endswith('.mp4'):
+            os.remove(os.path.join('data', file))
 
 @app.route('/get-blob-data', methods=['POST'])
 def get_blob_data():
     print(f"went into get-blob-data")
+    try:
+        resetDatafolder()
+        print(f"deleted files in data folder")
+    except:
+        print(f"no files in data folder or error")
+
+    # get audio blob from frontend
     data = request.files
     print(f"data['audioBlob']==>", data['audioBlob'])
     data['audioBlob'].save('data/nvp_HY.wav')
 
 
-    # # do something with the blob data here
-
-    # Code to extract audio features
     """
     Takes in .wav file, performs Audio-spatial Decomposition and returns .npy file of audio features
     """
@@ -78,6 +90,36 @@ def get_blob_data():
     video_url = f"data:video/mp4;base64,{b64encode(video_file).decode()}"
 
     return video_url
+
+# -------------------------------------------------------------------------------TESTING ROUTES BELOW THIS LINE--------------------------------------------------------------------------------
+#Test audio processing
+@app.route("/test_audio_process",methods=['POST'])
+def test_audio_processing():
+    """
+    Test Audio-spatial Decomposition from .wav file from frontend 
+    """
+    print(f"went into test-audio-processing")
+    try:
+        run_extract = subprocess.run(['python', 'nerf/asr.py', '--wav', 'data/nvp_HY.wav', '--save_feats'], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f'Extract audio features failed:')
+        print(e.stderr.decode())
+
+    return "success"
+
+@app.route("/test_audio_process_default",methods=['POST'])
+def test_audio_processing_default():
+    """
+    Test Audio-spatial Decomposition from .wav file from frontend 
+    """
+    print(f"went into test_audio_processing_default")
+    try:
+        run_extract = subprocess.run(['python', 'nerf/asr.py', '--wav', 'data/nvp.wav', '--save_feats'], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f'Extract audio features failed:')
+        print(e.stderr.decode())
+
+    return "success"
 
 @app.route('/test-return-video-data', methods=['POST'])
 def get_audio_data():
