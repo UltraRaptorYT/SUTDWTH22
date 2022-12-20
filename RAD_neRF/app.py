@@ -480,13 +480,15 @@ asr = ASR(
         "asr_save_feats": True,
     }
 )
-
+opt = {
+'H':450, 'O':True, 'W':450, 'amb_dim':2, 'asr':False, 'asr_model':'cpierse/wav2vec2-large-xlsr-53-esperanto', 'asr_play':False, 'asr_save_feats':False, 'asr_wav':'', 'att':2, 'aud':'data/intro_eo.npy', 'bg_img':'data/bg.jpg', 'bound':1, 'ckpt':'pretrained/model.pth', 'color_space':'srgb', 'cuda_ray':True, 'data_range':[0, 100], 'density_thresh':10, 'density_thresh_torso':0.01, 'dt_gamma':0.00390625, 'emb':False, 'exp_eye':True, 'fbg':False, 'finetune_lips':False, 'fix_eye':-1, 'fovy':21.24, 'fp16':True, 'fps':50, 'gui':False, 'head_ckpt':'', 'ind_dim':4, 'ind_dim_torso':8, 'ind_num':10000, 'l':10, 'lambda_amb':0.1, 'm':50, 'max_ray_batch':4096, 'max_spp':1, 'max_steps':16, 'min_near':0.05, 'num_rays':65536, 'num_steps':16, 'offset':[0, 0, 0], 'part':False, 'part2':False, 'patch_size':1, 'pose':'data/pose.json', 'r':10, 'radius':3.35, 'scale':4, 'seed':0, 'smooth_eye':True, 'smooth_lips':True, 'smooth_path':True, 'smooth_path_window':7, 'test':True, 'test_train':False, 'torso':True, 'torso_shrink':0.8, 'train_camera':False, 'update_extra_interval':16, 'upsample_steps':0, 'workspace':'trial',
+}
 from base64 import b64encode
 
 app = Flask(__name__)
 CORS(app)
 # @markdown ####**Settings:**
-Person = "engm"  # @param ['obama', 'marco', 'engm', 'chris']
+Person = "engm"  # @param ['obama', ''marco', 'engm', 'chris']
 Audio = "custom"  # @param ['intro', 'nvp', 'custom']
 Background = "default"  # @param ['default', 'custom']
 Pose_start = 0  # @param {type: 'integer'}
@@ -546,9 +548,13 @@ def get_blob_data():
         print(e.stderr.decode())
     print(f"runInference==> {runInference}")
 
-    Video = "trail/results/ngp_ep0059.mp4"  # Hard coded for now
-    Video_aud = Video.replace(".mp4", "_aud.mp4")
+    # get latest .mp4 file from trail/results
+    files = os.listdir("trail/results")
+    files.sort(key=os.path.getmtime)
+    print(f"files==>", files)
+    Video = "trail/results/" + files[-1]
 
+    Video = "trail/results/ngp_ep0059.mp4"  # Hard coded for now
     # # Concat audio with video
     # """
     # Takes in .mp4 file of face video (without audio) and .wav file of audio and
@@ -577,7 +583,7 @@ def get_blob_data():
     #     print(e.stderr.decode())
 
     # Convert video to base64
-    video_file = open(Video_aud, "r+b").read()
+    video_file = open(Video, "r+b").read()
     video_url = f"data:video/mp4;base64,{b64encode(video_file).decode()}"
 
     return video_url
@@ -695,6 +701,117 @@ def test_concat_audio_video():
         print(e.stderr.decode())
 
     return "Concat audio success"
+
+# TEST Inference
+from nerf.provider import NeRFDataset_Test
+from nerf.network import NeRFNetwork
+from nerf.gui import NeRFGUI
+from nerf.utils import *
+
+
+@app.route("/test-inference", methods=["POST"])
+def test_inference():
+    """
+    Test Inference
+    """
+    model = NeRFNetwork(opt)
+    print("==>> model: ", model)
+    trainer = Trainer('ngp', opt, model, device='cpu', workspace='workplace', fp16=opt['fp16'], metrics=[], use_checkpoint=opt['ckpt'])
+    test_loader = NeRFDataset_Test(opt, device='cpu').dataloader()
+
+    # temp fix: for update_extra_states
+    model.aud_features = test_loader._data.auds
+    model.eye_areas = test_loader._data.eye_area
+
+    if False:
+        # we still need test_loader to provide audio features for testing.
+        with NeRFGUI(opt, trainer, test_loader) as gui:
+            gui.render()
+
+    else:
+        
+        ### test and save video (fast)  
+        trainer.test(test_loader)
+
+# Not hardcoded get-blob-data endpoint
+@app.route("/get-blob-data-not-hardcode", methods=["POST"])
+def get_blob_data_not_hardcode():
+    print(f"went into get-blob-data")
+    try:
+        resetDatafolder()
+        print(f"deleted files in data folder")
+    except:
+        print(f"no files in data folder or error")
+
+    # get audio blob from frontend uncomment this to get audio blob from frontend
+    data = request.files
+    print(f"data['audioBlob']==>", data["audioBlob"])
+    data["audioBlob"].save("data/nvp.wav")
+
+    """
+    Takes in .wav file, performs Audio-spatial Decomposition and returns .npy file of audio features
+    """
+    try:
+        asr.run("data/nvp.wav")
+    except:
+        print(f"Extract audio features failed")
+        return "Extract audio features failed"
+
+    # # # Code to run inference CUDA broke this AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    # """
+    # Takes in .npy file of audio features, runs inference and returns .mp4 file of face video (without audio)
+    # """
+    # try:
+    #     runInference = subprocess.run(['python', 'test.py', '-O', '--torso', '--pose', 'data/marco.json', '--data_range', '0', '100', '--ckpt', 'pretrained/model.pth', '--aud', 'data/nvp_eo.npy', '--bg_img', 'data/bg.jpg'], check=True, stderr=subprocess.PIPE)
+    #     print(f"runInference==> {runInference}")
+
+    # except subprocess.CalledProcessError as e:
+    #     print(f'Run inference failed:')
+    #     print(e.stderr.decode())
+
+    # get latest .mp4 file from trail/results
+    files = os.listdir("trial/results")
+    for i,file in enumerate(files):
+        # get last modified file
+        if i == 0:
+            latest = file
+
+    print(f"latest_files==>", latest)
+    Video = "trial/results/" + latest
+    print("==>> Video: ", Video)
+
+    # # Concat audio with video
+    # """
+    # Takes in .mp4 file of face video (without audio) and .wav file of audio and
+    # Returns the video with audio concatenated denoted by '_aud' suffix
+    # """
+    # try:
+    #     concat_audio_command = subprocess.run(
+    #         [
+    #             "ffmpeg",
+    #             "-y",
+    #             "-i",
+    #             Video,
+    #             "-i",
+    #             "data/nvp.wav",
+    #             "-c:v",
+    #             "copy",
+    #             "-c:a",
+    #             "aac",
+    #             Video_aud,
+    #         ],
+    #         check=True,
+    #         stderr=subprocess.PIPE,
+    #     )
+    # except subprocess.CalledProcessError as e:
+    #     print(f"Concat audio failed:")
+    #     print(e.stderr.decode())
+
+    # Convert video to base64
+    video_file = open(Video, "r+b").read()
+    video_url = f"data:video/mp4;base64,{b64encode(video_file).decode()}"
+
+    return video_url
 
 
 @app.route("/")
