@@ -138,6 +138,9 @@
           let d = document.createElement("div");
           d.textContent = speechRec.resultString;
           d.classList.add("bubble");
+          if (transcriptDiv.children.length < 1) {
+            d.classList.add("mt-auto");
+          }
           d.classList.add("other");
           transcriptDiv.appendChild(d);
           transcriptDiv.scrollTo(0, transcriptDiv.scrollHeight);
