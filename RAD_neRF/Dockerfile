@@ -11,9 +11,7 @@ RUN pip install -U pip
 COPY . /app
 WORKDIR app
 
-RUN sudo apt-get update
-RUN sudo apt-get install build-essential libasound2-dev
-RUN sudo apt install portaudio19-dev
+RUN pip install pyaudio
 
 COPY requirements.txt app/requirements.txt
 RUN pip install -r app/requirements.txt
