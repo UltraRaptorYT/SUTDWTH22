@@ -11,9 +11,12 @@ RUN pip install -U pip
 COPY . /app
 WORKDIR app
 
+RUN sudo apt install portaudio19-dev
+
 COPY requirements.txt app/requirements.txt
 RUN pip install -r app/requirements.txt
 
+RUN bash scripts/install_ext.sh
 
 # Run
 ENTRYPOINT ["python", "app.py", "--server.port=5000", "--server.address=0.0.0.0"]
