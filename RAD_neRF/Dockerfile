@@ -11,7 +11,7 @@ RUN pip install -U pip
 COPY . /app
 WORKDIR app
 
-RUN sudo apt install portaudio19-dev
+RUN brew install portaudio
 
 COPY requirements.txt app/requirements.txt
 RUN pip install -r app/requirements.txt
